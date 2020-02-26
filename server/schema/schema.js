@@ -1,6 +1,6 @@
 const graphql = require('graphql');
 
-const { GraphQLObjectType, GraphQLString } = graphql;
+const { GraphQLObjectType, GraphQLString, GraphQLSchema } = graphql;
 
 // This is creating the schema we will be following in graphQL
 const BookType = new GraphQLObjectType({
@@ -9,7 +9,7 @@ const BookType = new GraphQLObjectType({
         id    : { type: GraphQLString },
         name  : { type: GraphQLString },
         genre : { type: GraphQLString },
-    })  
+    })
 });
 
 
@@ -22,7 +22,14 @@ const RootQuery = new GraphQLObjectType ({
         // On the front-end when querying this label is the keyword we're querying for
         book : {
             type : BookType,
-            args : { id : { type : GraphQLString } }
+            args : { id : { type : GraphQLString } },
+            resolve (parent, args) {
+                // code to get the data from the db / other sources 
+            }
         }
     }
-})
+});
+
+module.exports = new GraphQLSchema({
+    query:RootQuery
+});

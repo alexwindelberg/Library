@@ -26,7 +26,7 @@ const BookType = new GraphQLObjectType({
     })
 });
 
-// This is creating the schema we will be following in graphQL
+// This is creating the schema in graphQL
 const AuthorType = new GraphQLObjectType({
     name      : 'Author',
     fields    : () => ({
@@ -58,7 +58,14 @@ const RootQuery = new GraphQLObjectType ({
                 // using lodash
                 return _.find(books, { id: args.id });
             }
-        }
+        },
+        author : {
+            type : AuthorType,
+            args : { id : { type : GraphQLID } },
+            resolve (parent, args) { 
+                return _.find(authors, { id: args.id });
+            }
+        },
     }
 });
 

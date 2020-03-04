@@ -33,6 +33,7 @@ const RootQuery = new GraphQLObjectType ({
             args : { id : { type : GraphQLString } },
             resolve (parent, args) {
                 // code to get the data from the db / other sources 
+                // using lodash
                 return _.find(books, { id: args.id });
             }
         }

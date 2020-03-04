@@ -1,14 +1,20 @@
 const graphql = require('graphql');
 const _ = require('lodash');
-const { GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLID } = graphql;
+const { GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLID, GraphQLInt } = graphql;
 
 // dummy data
 var books = [
     { name: 'Name of the Wind', genre: 'Fantasy', id:'1' },
     { name: 'The Final Empire', genre: 'Fantasy', id:'2' },
-    { name: 'The Long Earth', genre: 'Sci-Fi', id:'3' },
+    { name: 'The Long Earth',   genre: 'Sci-Fi',  id:'3' },
 ];
 
+
+var authors = [
+    { name: 'Patrick Rothfuss',  age: 44, id: '1' },
+    { name: 'Brandon Sanderson', age: 42, id: '2' },
+    { name: 'Terry Pratchett',   age: 66, id: '3' },
+];
 
 // This is creating the schema we will be following in graphQL
 const BookType = new GraphQLObjectType({
@@ -17,6 +23,16 @@ const BookType = new GraphQLObjectType({
         id    : { type: GraphQLID },
         name  : { type: GraphQLString },
         genre : { type: GraphQLString },
+    })
+});
+
+// This is creating the schema we will be following in graphQL
+const AuthorType = new GraphQLObjectType({
+    name      : 'Author',
+    fields    : () => ({
+        id    : { type: GraphQLID },
+        name  : { type: GraphQLString },
+        age   : { type: GraphQLInt },
     })
 });
 
@@ -34,6 +50,10 @@ const RootQuery = new GraphQLObjectType ({
             type : BookType,
             args : { id : { type : GraphQLID } }, // we are changing from GraphQLString to ID type
             resolve (parent, args) {
+                
+                // check your terminal running nodemon to see output
+                // console.log( typeof(args.id) );
+
                 // code to get the data from the db / other sources 
                 // using lodash
                 return _.find(books, { id: args.id });

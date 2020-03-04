@@ -4,9 +4,12 @@ const { GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLID, GraphQLInt }
 
 // dummy data
 var books = [
-    { name: 'Name of the Wind', genre: 'Fantasy', id:'1', authorId: '1' },
-    { name: 'The Final Empire', genre: 'Fantasy', id:'2', authorId: '2' },
-    { name: 'The Long Earth',   genre: 'Sci-Fi',  id:'3', authorId: '3' },
+    { name: 'Name of the Wind',    genre: 'Fantasy', id:'1', authorId: '1' },
+    { name: 'The Final Empire',    genre: 'Fantasy', id:'2', authorId: '2' },
+    { name: 'The Long Earth',      genre: 'Sci-Fi',  id:'3', authorId: '3' },
+    { name: 'The Hero of Ages',    genre: 'Fantasy', id:'4', authorId: '2' },
+    { name: 'The Colour of Magic', genre: 'Fantasy', id:'5', authorId: '3' },
+    { name: 'The Light Fantastic', genre: 'Fantasy', id:'6', authorId: '3' },
 ];
 
 
@@ -58,7 +61,6 @@ const RootQuery = new GraphQLObjectType ({
             type : BookType,
             args : { id : { type : GraphQLID } }, // we are changing from GraphQLString to ID type
             resolve (parent, args) {
-                
                 // check your terminal running nodemon to see output
                 // console.log( typeof(args.id) );
 

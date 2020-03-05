@@ -1,6 +1,6 @@
 const graphql = require('graphql');
 const _ = require('lodash');
-const { GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLID, GraphQLInt } = graphql;
+const { GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLID, GraphQLInt, GraphQLList } = graphql;
 
 // dummy data
 var books = [
@@ -19,6 +19,23 @@ var authors = [
     { name: 'Terry Pratchett',   age: 66, id: '3' },
 ];
 
+
+// This is creating the schema in graphQL
+const AuthorType = new GraphQLObjectType({
+    name      : 'Author',
+    fields    : () => ({
+        id    : { type: GraphQLID },
+        name  : { type: GraphQLString },
+        age   : { type: GraphQLInt },
+        books : {
+            type : new GraphQLList(BookType),
+            resolve (parent, args) {
+                return _.filter(books, { authorId : parent.id });
+            }
+        }
+    })
+});
+
 // This is creating the schema we will be following in graphQL
 const BookType = new GraphQLObjectType({
     name            : 'Book',
@@ -34,16 +51,6 @@ const BookType = new GraphQLObjectType({
                 return _.find(authors, { id: parent.authorId });
             }
         }
-    })
-});
-
-// This is creating the schema in graphQL
-const AuthorType = new GraphQLObjectType({
-    name      : 'Author',
-    fields    : () => ({
-        id    : { type: GraphQLID },
-        name  : { type: GraphQLString },
-        age   : { type: GraphQLInt },
     })
 });
 
@@ -76,6 +83,7 @@ const RootQuery = new GraphQLObjectType ({
                 return _.find(authors, { id: args.id });
             }
         },
+        
     }
 });
 

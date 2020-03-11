@@ -2,11 +2,13 @@ const express = require('express');
 const graphqlHTTP = require('express-graphql');
 const schema = require('./schema/schema');
 const mongoose = require('mongoose');
+const apiData = require('./variables/variables');
 
 const app = express();
 
+
 // connect to the mlab database
-mongoose.connect("");
+mongoose.connect(apiData.mlabKey);
 mongoose.connection.once('open', () => {
     console.log('connected to the database');
 });

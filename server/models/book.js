@@ -6,5 +6,8 @@ const Schema = mongoose.Schema;
 const bookSchema = new Schema({
     name     : String,
     genre    : String,
-    authorId : String,  
+    authorId : String 
 });
+
+// model is the same as a collection 
+module.exports = mongoose.model('Book', bookSchema);

@@ -19,11 +19,15 @@ class BookList extends Component {
         // loading property, once complete it will return a books array
         let data = this.props.data;
         if(data.loading) {
-            return ( <div> Loading Books...</div> )
+            return ( 
+                <div> Loading Books...</div> 
+            );
         }
         else {
             return data.books.map( book => {
-                return ( <li>{book.name}</li> );
+                return ( 
+                    <li key={ book.id }> {book.name} </li> 
+                );
             });
         }
     }
@@ -33,7 +37,7 @@ class BookList extends Component {
         return (
         <div>
             <ul id="book-list">
-                <li> Book Name </li>
+                { this.displayBooks() }
             </ul>
         </div>
         );

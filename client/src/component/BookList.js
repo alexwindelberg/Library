@@ -1,15 +1,6 @@
 import React, { Component } from 'react';
-import { gql } from 'apollo-boost';
 import { graphql } from 'react-apollo';
-
-const getBooksQuery = gql`
-    {
-        books{
-            name
-            id
-        }
-    }
-`
+import { getBooksQuery } from '../queries/queries';
 
 class BookList extends Component {
 
@@ -19,7 +10,7 @@ class BookList extends Component {
         // loading property, once complete it will return a books array
         let data = this.props.data;
         if(data.loading) {
-            return ( 
+            return (
                 <div> Loading Books...</div> 
             );
         }

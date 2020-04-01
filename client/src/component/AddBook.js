@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
-import { getAuthorsQuery } from '../queries/queries'
+import { compose } from 'recompose';
+import { getAuthorsQuery, addBookMutation, getBooksQuery } from '../queries/queries';
 
 
 class AddBook extends Component {
@@ -14,7 +15,8 @@ class AddBook extends Component {
         };
     }
     displayAuthors () {
-        let data = this.props.data;
+        let data = this.props.getAuthorsQuery;
+        console.log(this.props);
         if(data.loading) {
             return (
                 <option disabled>Loading Authors...</option>
@@ -23,13 +25,28 @@ class AddBook extends Component {
         else { 
             return data.authors.map( author => {
                 return ( <option key={ author.id } value={ author.id }> { author.name } </option> );    
-            }); 
+            });
         }
+    }
+
+    submitForm(e) {
+        e.preventDefault();
+        console.log(this.state);
+        // submit this to the database
+        this.props.addBookMutationRef({
+            variables    : {
+                name     : this.state.name,
+                genre    : this.state.genre,
+                authorId : this.state.authorId 
+            },
+            refetchQueries : [{ query : getBooksQuery }]
+        });
+
     }
 
     render () {
         return (
-            <form id = "add-book">
+            <form id = "add-book" onSubmit={ this.submitForm.bind(this) }>
                 <div className="field">
                     <label>Book Name :</label>
                     <input type="text" onChange={(e)=> this.setState({ name : e.target.value }) }/>
@@ -54,4 +71,7 @@ class AddBook extends Component {
     }
 }
 
-export default graphql(getAuthorsQuery)(AddBook);
+export default compose(
+    graphql(getAuthorsQuery, { name: "getAuthorsQuery"}),
+    graphql(addBookMutation, { name: "addBookMutationRef"})
+)(AddBook);
